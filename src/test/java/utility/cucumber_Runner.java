@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "E:\\Eclipse_Projects\\amazon\\src\\test\\java\\testCases", glue = "stepdefinition", plugin = {
-		"pretty" })
+		"pretty" }, dryRun = false)
 
 public class cucumber_Runner {
 

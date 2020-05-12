@@ -1,6 +1,5 @@
 package utility;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -9,19 +8,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class configurable_properties {
-	static WebDriver driver;
+
 	static Properties prop;
-
-	public static void property_File() throws IOException {
-		prop = new Properties();
-		FileInputStream ip = new FileInputStream(".\\src\\test\\java\\resources\\configurableProperty.Properties");
-		prop.load(ip);
-
-	}
+	public static WebDriver driver;
 
 	public static WebDriver browser_choice() throws IOException
 
 	{
+
+		prop = ReadPropertyFile.property_File();
 
 		String browserName = prop.getProperty("browser");
 		if (browserName.equals("chrome")) {
@@ -44,9 +39,7 @@ public class configurable_properties {
 		driver.get(prop.getProperty("url"));
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-		
+
 	}
 
-	
-	
 }
