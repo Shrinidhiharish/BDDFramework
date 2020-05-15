@@ -3,11 +3,14 @@ package Pages;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import repository.Login_Page_Repository;
 import repository.SearchItem_Page_Repository;
@@ -32,23 +35,54 @@ public class LoginPage {
      	WebElement userLoggedIn=driver.findElement(By.xpath("//div[@id='nav-tools']/a[2]/span[1][contains(text(),'Hello, Shrinidhi')]"));
      	if(userLoggedIn.getText().equals("Hello, Shrinidhi"))
      	{
-     		System.out.println("Successfully logged In as Shrinidhi and navigated to Homepage of the  Application");
+     		Assert.assertTrue(true);//ystem.out.println("Successfully logged In as Shrinidhi and navigated to Homepage of the  Application");
      	}
      	else
      	{
-     		System.out.println("Loggin unsuccessful");
+     		Assert.assertFalse(false);
      	}
      	
      	driver.findElement(By.id(SearchItem_Page_Repository.SearchBox)).sendKeys(Keys.SHIFT , "baby clothes");
      	
-     	
-     	
-     	driver.findElement(By.id(SearchItem_Page_Repository.SearchBox)).sendKeys(Keys.DOWN);
-     	driver.findElement(By.id(SearchItem_Page_Repository.SearchBox)).sendKeys(Keys.DOWN);
-     	driver.findElement(By.id(SearchItem_Page_Repository.SearchBox)).sendKeys(Keys.DOWN);
-    
-	}
+     	JavascriptExecutor js= (JavascriptExecutor)driver;
 
+		String script = "return document.getElementById(\"twotabsearchtextbox\").value;";
+		String text=(String) js.executeScript(script);
+		int i =0;
+		while(!text.equalsIgnoreCase("baby clothes boy 3-6 months"))
+		{
+		i++;
+		driver.findElement(By.id("twotabsearchtextbox")).sendKeys(Keys.DOWN);
+
+		text=(String) js.executeScript(script);
+		//System.out.println(text);
+		if(i>10)
+		{
+		break;
+		}
+
+		}
+
+		if(i>10)
+		{
+		System.out.println("Element not found");
+		}
+		else
+		{
+		System.out.println("Element  found");
+		}
+    
+		
+		driver.findElement(By.xpath(SearchItem_Page_Repository.SearchButton)).click();
+		
+		Select dropDownOption  = new Select((WebElement) driver.findElement(By.id("s-result-sort-select")));
+		
+		System.out.println(dropDownOption.getOptions());
+		dropDownOption.selectByValue("price-desc-rank");
+	
+		
+		js.executeScript("window.scrollBy(0,250)");
+	}
 	
 	
 //	public static void loginusername() throws IOException {
